@@ -59,9 +59,6 @@ RUN apt-get install -y freerdp-x11
 RUN apt-get install -y libnfs-dev
 RUN pip install -I "libnfs==1.0.post4"
 
-# Docker Check
-RUN pip install docker
-
 # OpenVPN Check
 RUN apt-get install -y openvpn iproute2 sudo
 COPY docker/worker/sudoers /etc/sudoers
