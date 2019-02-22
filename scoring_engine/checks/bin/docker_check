@@ -59,6 +59,7 @@ def main():
         return False
     
     # Pull the new image
+    '''
     try:
         image = client.images.pull(container_name)
         print("[+] Pulled image:", image.tags[0])
@@ -76,7 +77,6 @@ def main():
         print("[-] Failed to run", container_name)
         print("[!] DOCKER ERROR: {}".format(E))
         return False
-
     if has_container_run(client, container.name):
         print("[+] '{}' has run successfully".format(container.name))
     else:
@@ -97,7 +97,15 @@ def main():
     except docker.errors.APIError as E:
         print("[-] Failed to delete", container_name)
         print("[!] DOCKER ERROR: {}".format(E))
-
+    '''
+    # Loop the containers
+    try:
+        print("[*] Checking API")
+        for cont in client.containers.list(all=True):
+            pass
+    except Exception as E:
+        print("[!] DOCKER ERROR: {}".format(E))
+    
     return True
 
 if __name__ == '__main__':
