@@ -100,7 +100,6 @@ class Team(Base):
         ##########################
         
         # ELSE:
-        # TODO: Add results to cache
         
         #################
         # CURRENT QUERY #
@@ -123,6 +122,8 @@ class Team(Base):
         #################
         # CURRENT QUERY #
         #################
+
+        # TODO: Add results to cache
 
         results['rounds'] = rounds
         results['scores'] = scores
