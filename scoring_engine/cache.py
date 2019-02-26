@@ -15,3 +15,6 @@ redis_cache = Redis(
     port=config.redis_port, 
     password=config.redis_password
 )
+
+redis_cache.set('teams_count', -1);
+redis_cache.set('round_number', -1);

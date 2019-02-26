@@ -5,6 +5,7 @@ from sqlalchemy.orm import relationship
 from scoring_engine.models.base import Base
 from scoring_engine.models.round import Round
 from scoring_engine.db import session
+from scoring_engine.cache import redis_cache
 
 
 class Team(Base):
@@ -92,38 +93,47 @@ class Team(Base):
         rounds = []
         scores = {}
 
-        # TODO: Simple query to check team numbers
-        # TODO: Simple query to check round number
-        # TODO: IF: team numbers match cache && IF: round number match cache
-        ##########################
-        # TODO: CACHE QUERY HERE #
-        ##########################
-        
-        # ELSE:
-        
-        #################
-        # CURRENT QUERY #
-        #################
+        # get minimal info from db
         blue_teams = session.query(Team).filter(Team.color == 'Blue').all()
         last_round_obj = session.query(Round).order_by(Round.number.desc()).first()
-        if last_round_obj:
-            last_round = last_round_obj.number
-            for round_num in range(0, last_round + 1):
-                rounds.append("Round " + str(round_num))
 
-            rgb_colors = {}
-            team_names = []
-            for team in blue_teams:
-                scores[team.name] = team.get_array_of_scores(last_round)
-                rgb_colors[team.name] = team.rgb_color
-                team_names.append(team.name)
-            results['team_names'] = team_names
-            results['rgb_colors'] = rgb_colors
-        #################
-        # CURRENT QUERY #
-        #################
+        # get cache data to check
+        cache_teams_count = redis_cache.get('teams_count')
+        cache_round_number = redis_cache.get('round_number')
 
-        # TODO: Add results to cache
+        # if this round is already cached, return it instead
+        if last_round_obj.number == cache_round_number:
+            ##########################
+            # TODO: CACHE QUERY HERE #
+            ##########################
+            pass
+
+        # otherwise standard query
+        else:
+            #################
+            # CURRENT QUERY #
+            #################
+            #blue_teams = session.query(Team).filter(Team.color == 'Blue').all()
+            #last_round_obj = session.query(Round).order_by(Round.number.desc()).first()
+            if last_round_obj:
+                last_round = last_round_obj.number
+                for round_num in range(0, last_round + 1):
+                    rounds.append("Round " + str(round_num))
+
+                rgb_colors = {}
+                team_names = []
+                for team in blue_teams:
+                    scores[team.name] = team.get_array_of_scores(last_round)
+                    rgb_colors[team.name] = team.rgb_color
+                    team_names.append(team.name)
+                results['team_names'] = team_names
+                results['rgb_colors'] = rgb_colors
+            
+            # TODO: Add results to cache
+            #################
+            # CURRENT QUERY #
+            #################
+        
 
         results['rounds'] = rounds
         results['scores'] = scores
