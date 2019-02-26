@@ -6,6 +6,7 @@ from scoring_engine.models.team import Team
 from . import mod
 
 
+# TODO: Remove caching once implemented at the model level
 @mod.route('/api/scoreboard/get_bar_data')
 @cache.memoize()
 def scoreboard_get_bar_data():
@@ -24,6 +25,7 @@ def scoreboard_get_bar_data():
     return jsonify(team_data)
 
 
+# TODO: Remove caching once implemented at the model level
 @mod.route('/api/scoreboard/get_line_data')
 @cache.memoize()
 def scoreboard_get_line_data():

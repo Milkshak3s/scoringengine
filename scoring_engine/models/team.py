@@ -82,12 +82,29 @@ class Team(Base):
 
     @staticmethod
     def get_all_rounds_results():
+        """
+        Returns a dictionary containing results for all rounds to date
+        """
         results = {}
         results['scores'] = {}
         results['rounds'] = []
 
         rounds = []
         scores = {}
+
+        # TODO: Simple query to check team numbers
+        # TODO: Simple query to check round number
+        # TODO: IF: team numbers match cache && IF: round number match cache
+        ##########################
+        # TODO: CACHE QUERY HERE #
+        ##########################
+        
+        # ELSE:
+        # TODO: Add results to cache
+        
+        #################
+        # CURRENT QUERY #
+        #################
         blue_teams = session.query(Team).filter(Team.color == 'Blue').all()
         last_round_obj = session.query(Round).order_by(Round.number.desc()).first()
         if last_round_obj:
@@ -103,6 +120,9 @@ class Team(Base):
                 team_names.append(team.name)
             results['team_names'] = team_names
             results['rgb_colors'] = rgb_colors
+        #################
+        # CURRENT QUERY #
+        #################
 
         results['rounds'] = rounds
         results['scores'] = scores
