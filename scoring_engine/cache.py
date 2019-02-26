@@ -1,4 +1,5 @@
 from flask_caching import Cache
+from redis import Redis
 from scoring_engine.config import config
 
 
@@ -8,3 +9,9 @@ cache = Cache(config={
     'CACHE_REDIS_PORT': config.redis_port,
     'CACHE_REDIS_PASSWORD': config.redis_password,
 })
+
+redis_cache = Redis(
+    host=config.redis_host, 
+    port=config.redis_port, 
+    password=config.redis_password
+)
